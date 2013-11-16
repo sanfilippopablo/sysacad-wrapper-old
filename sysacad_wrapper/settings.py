@@ -83,3 +83,6 @@ STATIC_URL = '/static/'
 
 TEMPLATE_DIRS = ('C:/Users/Pablo/Documents/sysacad-wrapper/website/Templates',)
 
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
