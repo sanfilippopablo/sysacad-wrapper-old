@@ -80,3 +80,11 @@ body, h1, h2, h3, h4, h5, h6 {
 .logros .media-body {
   margin-top: 9px;
 }
+
+.logro-no-conseguido {
+  opacity: 0.4;
+}
+
+.logros li {
+  margin-bottom: 30px;
+}
