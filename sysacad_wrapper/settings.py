@@ -76,24 +76,24 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.6/howto/static-files/
+# Static files
 
 STATIC_URL = '/static/'
 
-TEMPLATE_DIRS = ('C:/Users/Pablo/Documents/sysacad-wrapper/website/Templates',)
+TEMPLATE_DIRS = os.path.join(BASE_DIR, 'Templates/')
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
+
+# Authentication
 
 AUTHENTICATION_BACKENDS = ('website.auth.SysacadAuthBackend',)
 
 AUTH_USER_MODEL = 'website.Alumno'
 
 FR_URL = {
-    'frro': 'http://www.alumnos.frro.utn.edu.ar',
+    'frro': 'http://www.alumnos.frro.utn.edu.ar/',
 }
 
 
