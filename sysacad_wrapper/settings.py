@@ -92,7 +92,7 @@ AUTHENTICATION_BACKENDS = ('website.auth.SysacadAuthBackend',)
 
 AUTH_USER_MODEL = 'website.Alumno'
 
-FR_URL = {
+FR_BASE_URL = {
     'frro': 'http://www.alumnos.frro.utn.edu.ar/',
 }
 
