@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'website',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -86,3 +87,11 @@ TEMPLATE_DIRS = ('C:/Users/Pablo/Documents/sysacad-wrapper/website/Templates',)
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
+
+AUTHENTICATION_BACKENDS = ('website.auth.SysacadAuthBackend',)
+
+AUTH_USER_MODEL = 'website.Alumno'
+
+FR_URL = {
+    'frro': 'http://www.alumnos.frro.utn.edu.ar',
+}

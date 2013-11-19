@@ -1,13 +1,15 @@
-from django import models
-from sysacad_api import SysacadSession
+ # -*- coding: utf-8 -*-
 
+from django.contrib.auth.models import BaseUserManager, AbstractUser
+from django.db import models
+from django.utils import timezone
+from sysacad_api import SysacadSession
+from sysacad_wrapper.settings import BASE_URL
 class SysacadAuthBackend(object):
 	def authenticate(self, fr=None, legajo=None, password=None):
 		s = SysacadSession(fr, legajo, password)
-		try:
-			s.login()
-		except:
-			return None
+		s.login()
+		print s
 		try:
 			alumno = Alumno.objects.get(fr=fr, legajo=legajo)
 		except Alumno.DoesNotExist:
@@ -22,29 +24,14 @@ class SysacadAuthBackend(object):
 		except Alumno.DoesNotExist:
 			return None
 
-class AlumnoManager(models.BaseUserManager):
-
-	# TODO: Ir fijandome en el django sc los metodos de BaseUserManager que
-	# no sirve e ir redefiniéndolos.
-
-	def create_user(self, fr, legajo, password=None):
-		pass
-
-	def create_superuser(self, fr, legajo, password):
-		pass
-
 frs = (
 	('frro', 'Rosario'),
 	('frre', 'Resistencia'),
 )
 
-class Alumno(AbstractBaseUser):
-
-	# TODO: Ir fijandome en el django sc los metodos de AbstractBaseUser que
-	# no sirve e ir redefiniéndolos.
+class Alumno(AbstractUser):
 
 	fr = models.CharField(max_length=10, choices=frs)
-	legajo = models.CharField(max_length=30)
-	password = models.CharField(max_length=128)
+	legajo = models.CharField(max_length=30	)
 
-	objects = AlumnoManager()
+	REQUIRED_FIELDS = ['fr', 'legajo', 'email']
