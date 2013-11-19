@@ -88,7 +88,7 @@ STATICFILES_DIRS = (
 
 # Authentication
 
-AUTHENTICATION_BACKENDS = ('website.auth.SysacadAuthBackend',)
+AUTHENTICATION_BACKENDS = ('website.auth.backend.SysacadAuthBackend',)
 
 AUTH_USER_MODEL = 'website.Alumno'
 
