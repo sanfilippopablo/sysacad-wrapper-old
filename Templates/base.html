@@ -4,10 +4,14 @@
 <html>
   <head>
     <title>{% block 'head_title' %}{% endblock %} - Sysacad Wrapper</title>
+    <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% block 'css' %}
     <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/index2.css' %}" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link href="{% static 'css/base.css' %}" rel="stylesheet">
+    {% endblock 'css' %}
 
   </head>
   <body>
@@ -83,8 +87,10 @@
       {% endblock 'main_container' %}
     </div><!--/.container-->
 
+    {% block 'js' %}
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
+    {% endblock 'js' %}
   </body>
 </html>
