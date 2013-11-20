@@ -94,6 +94,7 @@ AUTH_USER_MODEL = 'website.Alumno'
 
 FR_BASE_URL = {
     'frro': 'http://www.alumnos.frro.utn.edu.ar/',
+    'frsn': 'http://www.frsn.utn.edu.ar/sysacad/',
 }
 
 LOGIN_URL = '/login/'
