@@ -9,3 +9,4 @@ def dashboard(request):
 	s = SysacadSession(FR_BASE_URL[request.user.fr], cookies={request.user.cookies.key: request.user.cookies.value})
 	materias = s.materiasEnCurso()
 	return render_to_response('dashboard.html', RequestContext(request, {'materias': materias}))
+

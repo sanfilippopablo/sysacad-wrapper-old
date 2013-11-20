@@ -4,6 +4,6 @@ $(document).ready(function() {
   });
 });
 
-$('.progress-bar').tooltip()
+$('.loading-new-data').tooltip()
 
 $('#notificaciones').popover()
