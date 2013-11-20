@@ -101,6 +101,8 @@ LOGIN_URL = '/login/'
 
 LOGIN_REDIRECT_URL = '/'
 
+SESSION_DURATION = 3600
+
 TEMPLATE_CONTEXT_PROCESSORS = ("django.contrib.auth.context_processors.auth",
     "django.core.context_processors.debug",
     "django.core.context_processors.i18n",

@@ -4,10 +4,10 @@ from django.contrib.auth.models import BaseUserManager, AbstractUser
 from django.db import models
 from django.utils import timezone
 from sysacad_api import SysacadSession
-from sysacad_wrapper.settings import FR_BASE_URL
+from sysacad_wrapper.settings import FR_BASE_URL, SESSION_DURATION
 from django import forms
 from django.contrib.auth import authenticate
-from datetime import datetime
+from datetime import datetime, timedelta
 
 class SysacadAuthBackend(object):
 	def authenticate(self, fr=None, legajo=None, password=None):
@@ -89,6 +89,11 @@ class Alumno(AbstractUser):
 	objects = AlumnoManager()
 
 	REQUIRED_FIELDS = ['fr', 'legajo', 'email']
+
+	def is_ready_for_request(self):
+		if (timezone.now() - self.last_activity) > timedelta(seconds=SESSION_DURATION):
+			return False
+		return True
 
 class AuthenticationForm(forms.Form):
 

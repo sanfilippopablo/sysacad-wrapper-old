@@ -4,6 +4,9 @@
 {% block 'content_container_title' %}Dashboard{% endblock %}
 
 {% block 'content_container' %}
-
-
+<ul>
+    {% for materia in materias %}
+        <li>{{ materia }}</li>
+    {% endfor %}
+    </ul>
 {% endblock 'content_container' %}
