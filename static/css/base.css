@@ -63,6 +63,11 @@ body, h1, h2, h3, h4, h5, h6 {
   width: 90%;
 }
 
+footer {
+  padding-top: 0;
+  text-align: center;
+}
+
 /* Menu button */
 @media (max-width: 767px) {
   #menu-button {

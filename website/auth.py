@@ -29,7 +29,7 @@ class SysacadAuthBackend(object):
 
 	def get_user(self, user_id):
 		try:
-			Alumno.objects.get(pk=user_id)
+			return Alumno.objects.get(pk=user_id)
 		except Alumno.DoesNotExist:
 			return None
 
@@ -80,7 +80,7 @@ class AuthenticationForm(forms.Form):
 		'invalid_login': "Información de login incorrecta."
 	}
 
-	def __init__(self, *args, **kwargs):
+	def __init__(self, request, *args, **kwargs):
 		self.user_cache = None
 		super(AuthenticationForm, self).__init__(*args, **kwargs)
 
