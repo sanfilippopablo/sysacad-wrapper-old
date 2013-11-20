@@ -1,2 +1,2 @@
 from django.db import models
-from website.auth import Alumno
+from website.auth import Alumno, AccessCookie

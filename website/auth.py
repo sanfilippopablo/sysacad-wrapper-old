@@ -7,6 +7,7 @@ from sysacad_api import SysacadSession
 from sysacad_wrapper.settings import FR_BASE_URL
 from django import forms
 from django.contrib.auth import authenticate
+from datetime import datetime
 
 class SysacadAuthBackend(object):
 	def authenticate(self, fr=None, legajo=None, password=None):
@@ -24,11 +25,15 @@ class SysacadAuthBackend(object):
 			alumno.first_name = datos['nombre']
 			alumno.last_name = datos['apellido']
 			alumno.save()
-			return alumno
 		else:
 			if not alumno.check_password(password):
 				alumno.set_password(password)
-			return alumno
+		alumno.last_activity = timezone.now()
+		alumno.cookies.key = s.cookies.keys()[0]
+		alumno.cookies.value = s.cookies.values()[0]
+		alumno.cookies.save()
+		alumno.save()
+		return alumno
 
 	def get_user(self, user_id):
 		try:
@@ -52,6 +57,9 @@ class AlumnoManager(BaseUserManager):
                           is_staff=is_staff, is_active=True,
                           is_superuser=is_superuser, last_login=now,
                           date_joined=now, **extra_fields)
+        cookie = AccessCookie()
+        cookie.save()
+        user.cookies = cookie
         user.username = user.fr + user.legajo
         user.set_password(password)
         user.save(using=self._db)
@@ -65,10 +73,18 @@ class AlumnoManager(BaseUserManager):
         return self._create_user(fr, legajo, email, password, True, True,
                                  **extra_fields)
 
+
+class AccessCookie(models.Model):
+	key = models.CharField(max_length=20, null=True)
+	value = models.CharField(max_length=24, null=True)
+	last_access = models.DateTimeField(auto_now=True)
+
 class Alumno(AbstractUser):
 
 	fr = models.CharField(max_length=10, choices=frs)
 	legajo = models.CharField(max_length=30)
+	last_activity = models.DateTimeField(default=timezone.now())
+	cookies = models.ForeignKey(AccessCookie, null=True)
 
 	objects = AlumnoManager()
 
