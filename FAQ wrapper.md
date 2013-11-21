@@ -1,12 +1,12 @@
 #FAQ del SysAcad Wrapper#
 
-##Qu� es el SysAcad Wrapper?##
+##Qué es el SysAcad Wrapper?##
 
-Como estudiantes de la UTN FRRO que somos, sabemos lo est�tica y funcionalmente pobre que es el actual SysAcad.
-Entonces, para ver si pod�amos hacer algo mejor que eso, decidimos dise�ar e implementar algo que nos d� una soluci�n de manera sencilla.
-As�, surgi� el SysAcad Wrapper, una p�gina que, sin ser una plataforma independiente al SysAcad, nos da m�s funciones y ofrece una est�tica mucho m�s moderna y amigable.
+Como estudiantes de la UTN FRRO que somos, sabemos lo estética y funcionalmente pobre que es el actual SysAcad.
+Entonces, para ver si podíamos hacer algo mejor que eso, decidimos diseñar e implementar algo que nos dé una solución de manera sencilla.
+Así, surgió el SysAcad Wrapper, una página que, sin ser una plataforma independiente al SysAcad, nos da más funciones y ofrece una estética mucho más moderna y amigable.
 Por supuesto, el uso del SysAcad Wrapper es legal, ya que el Wrapper se comunica con el SysAcad original, de manera que TODO pasa por �l.
-Vale aclarar que nosotros S� almacenamos el legajo y contrase�a de los alumnos, para poder hacer funcionar algunas de las caracter�sticas del Wrapper.
+Vale aclarar que almacenamos el legajo y otros datos en la DB (para la funcionalidad extendida) pero NO almacenamos tu contraseña.
 
 ##Por qu� usar�a el Wrapper y no el SysAcad original?##
 
@@ -29,6 +29,10 @@ Uf, hay tantas cosas�
 ##Che, pero a mi eso de los logros y el scoreboard me parece una gilada, honestamente�##
 
 Bueno, depende que tan malo te parezca, pod�s mandar un mail a soporte@sysacadwrapper.com.ar expresando tu completo disgusto, o simplemente no mirarlo y dedicarte a no quererlo en silencio :D. De todas formas pod�s desactivar tu nombre del scoreboard por lo que nadie te ver�a ah�.
+
+## Es seguro? ##
+
+Totalmente. La contraseña se almacena así: [Chalo writing needed here]
 
 ##La idea me parece bien, pero yo cambiar�a algunas cosas�##
 
