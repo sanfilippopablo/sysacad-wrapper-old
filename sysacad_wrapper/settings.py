@@ -1,3 +1,4 @@
+ # -*- coding: utf-8 -*-
 """
 Django settings for sysacad_wrapper project.
 
@@ -92,9 +93,19 @@ AUTHENTICATION_BACKENDS = ('website.auth.SysacadAuthBackend',)
 
 AUTH_USER_MODEL = 'website.Alumno'
 
-FR_BASE_URL = {
-    'frro': 'http://www.alumnos.frro.utn.edu.ar/',
-    'frsn': 'http://www.frsn.utn.edu.ar/sysacad/',
+FR = {
+    'frro': {
+        'base_url': 'http://www.alumnos.frro.utn.edu.ar/',
+        'nombre': 'Rosario',
+    },
+    'frsn': {
+        'base_url': 'http://www.frsn.utn.edu.ar/sysacad/',
+        'nombre': 'San Nicolás',
+    },
+    'frre': {
+        'base_url': 'http://sysacadweb.frre.utn.edu.ar/',
+        'nombre': 'Resistencia',
+    },
 }
 
 LOGIN_URL = '/login/'

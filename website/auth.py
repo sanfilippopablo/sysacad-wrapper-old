@@ -1,17 +1,16 @@
  # -*- coding: utf-8 -*-
-
-from django.contrib.auth.models import BaseUserManager, AbstractUser
+from website.models import Alumno
 from django.db import models
 from django.utils import timezone
 from sysacad_api import SysacadSession
-from sysacad_wrapper.settings import FR_BASE_URL, SESSION_DURATION
+from sysacad_wrapper.settings import FR, SESSION_DURATION
 from django import forms
 from django.contrib.auth import authenticate
 from datetime import datetime, timedelta
 
 class SysacadAuthBackend(object):
 	def authenticate(self, fr=None, legajo=None, password=None):
-		s = SysacadSession(FR_BASE_URL[fr])
+		s = SysacadSession(FR[fr]['base_url'])
 		try:
 			s.login(legajo, password)
 		except:
@@ -41,60 +40,6 @@ class SysacadAuthBackend(object):
 			return Alumno.objects.get(pk=user_id)
 		except Alumno.DoesNotExist:
 			return None
-
-frs = (
-	('frro', 'Rosario'),
-	('frre', 'Resistencia'),
-	('frsn', 'San Nicolás')
-)
-
-class AlumnoManager(BaseUserManager):
-
-    def _create_user(self, fr, legajo, email, password,
-                     is_staff, is_superuser, **extra_fields):
-        now = timezone.now()
-        email = self.normalize_email(email)
-        user = self.model(fr=fr, legajo=legajo, email=email,
-                          is_staff=is_staff, is_active=True,
-                          is_superuser=is_superuser, last_login=now,
-                          date_joined=now, **extra_fields)
-        cookie = AccessCookie()
-        cookie.save()
-        user.cookies = cookie
-        user.username = user.fr + user.legajo
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_user(self, fr, legajo, email=None, password=None, **extra_fields):
-        return self._create_user(fr, legajo, email, password, False, False,
-                                 **extra_fields)
-
-    def create_superuser(self, fr, legajo, email, password, **extra_fields):
-        return self._create_user(fr, legajo, email, password, True, True,
-                                 **extra_fields)
-
-
-class AccessCookie(models.Model):
-	key = models.CharField(max_length=20, null=True)
-	value = models.CharField(max_length=24, null=True)
-	last_access = models.DateTimeField(default=timezone.now())
-
-class Alumno(AbstractUser):
-
-	fr = models.CharField(max_length=10, choices=frs)
-	legajo = models.CharField(max_length=30)
-	last_activity = models.DateTimeField(default=timezone.now())
-	cookies = models.ForeignKey(AccessCookie, null=True)
-
-	objects = AlumnoManager()
-
-	REQUIRED_FIELDS = ['fr', 'legajo', 'email']
-
-	def is_ready_for_request(self):
-		if (timezone.now() - self.last_activity) > timedelta(seconds=SESSION_DURATION):
-			return False
-		return True
 
 class AuthenticationForm(forms.Form):
 
