@@ -29,6 +29,7 @@ class SysacadAuthBackend(object):
 			if not alumno.check_password(password):
 				alumno.set_password(password)
 		alumno.last_activity = timezone.now()
+		alumno.cookies.last_access = timezone.now()
 		alumno.cookies.key = s.cookies.keys()[0]
 		alumno.cookies.value = s.cookies.values()[0]
 		alumno.cookies.save()
@@ -77,7 +78,7 @@ class AlumnoManager(BaseUserManager):
 class AccessCookie(models.Model):
 	key = models.CharField(max_length=20, null=True)
 	value = models.CharField(max_length=24, null=True)
-	last_access = models.DateTimeField(auto_now=True)
+	last_access = models.DateTimeField(default=timezone.now())
 
 class Alumno(AbstractUser):
 
