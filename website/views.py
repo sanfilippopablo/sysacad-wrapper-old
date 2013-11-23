@@ -25,7 +25,7 @@ def dashboard_data(request):
 			s = SysacadSession(FR[request.user.fr]['base_url'])
 			s.login(request.user.legajo, request.POST.get('password'))
 		else:
-			return HttpResponse('password_needed')
+			return HttpResponse('password_required')
 
 	materias_dict = s.allDataFromEstadoAcademico()['materias']
 	materias = request.user.actualizar_materias(materias_dict).filter(estado='cursa')
