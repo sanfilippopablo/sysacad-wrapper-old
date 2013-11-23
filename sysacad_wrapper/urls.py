@@ -9,6 +9,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'website.views.dashboard'),
+    url(r'^dash_data/$', 'website.views.dashboard_data'),
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html', 'authentication_form': AuthenticationForm}),
     url(r'^admin/', include(admin.site.urls)),
 )

@@ -4,10 +4,17 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractUser
 from django.utils import timezone
 
+materia_dificultad = (
+	('e', 'Easy'),
+	('m', 'Medium'),
+	('h', 'Hard'),
+)
+
 class Materia(models.Model):
     nombre = models.CharField(max_length=50)
     plan = models.CharField(max_length=10)
     anio = models.CharField(max_length=2)
+    dificultad = models.CharField(max_length=2, choices=materia_dificultad, null=True)
 
 class Carrera(models.Model):
 	nombre = models.CharField(max_length=128)
@@ -15,10 +22,11 @@ class Carrera(models.Model):
 class EstadoMateria(models.Model):
 	materia = models.ForeignKey(Materia)
 	estado = models.CharField(max_length=32)
-	lugar = models.CharField(max_length=64, blank=True, null=True)
+	aula = models.CharField(max_length=64, blank=True, null=True)
 	nota = models.IntegerField(blank=True, null=True)
 	tomo = models.IntegerField(blank=True, null=True)
 	folio = models.IntegerField(blank=True, null=True)
+	comision = models.CharField(max_length=24)
 
 class AlumnoManager(BaseUserManager):
 
@@ -69,3 +77,33 @@ class Alumno(AbstractUser):
 		if (timezone.now() - self.last_activity) > timedelta(seconds=SESSION_DURATION):
 			return False
 		return True
+
+	def actualizar_materias(self, materias_dict):
+		for mat in materias_dict:
+			# Actualizar la tabla materias (esto se hace la primera vez)
+			try:
+				materia_obj = Materia.objects.get(nombre=mat['nombre'])
+			except Materia.DoesNotExist:
+				materia_obj = Materia.objects.create(
+					nombre = mat['nombre'],
+					plan = mat['plan'],
+					anio = mat['anio']
+				)
+
+			# Actualizar materias de alumno.
+			# Acá estoy seteando todo otra vez. Pero hay que verificar, no setear todo otra vez.
+			# Así si detectamos un cambio mandamos la Notification.
+			al_mat = self.materias.get_or_create(materia=materia_obj, estado=mat['estado']['estado'])[0]
+			if mat['estado']['estado'] == 'aprobada':
+				al_mat.estado = 'aprobada'
+				al_mat.nota = mat['estado']['nota']
+				al_mat.tomo = mat['estado']['tomo']
+				al_mat.folio = mat['estado']['folio']
+			elif mat['estado']['estado'] == 'cursa':
+				al_mat.estado = 'cursa'
+				al_mat.aula = mat['estado']['aula']
+				al_mat.comision = mat['estado']['comision']
+			elif mat['estado']['estado'] == 'regular':
+				al_mat.estado = 'regular'
+			al_mat.save()
+		return self.materias

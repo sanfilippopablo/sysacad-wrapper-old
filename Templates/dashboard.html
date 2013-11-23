@@ -5,29 +5,8 @@
 {% block 'content_container_title' %}Dashboard{% endblock %}
 
 {% block 'content_container' %}
-<div class="col-md-6 col-sm-6 col-lg-4">
-    <div class="panel panel-default materias-en-curso">
-        <div class="panel-heading">
-            <div class="panel-title">
-                Materias en curso
-                <img src="{% static 'img/ajax-loader.gif' %}" class="pull-right loading-new-data" title="Datos antiguos. Actualizando..." data-trigger="hover">
-                </div>
-        </div>
-        <div class="panel-body">
-            <ul class="list-group">
-            {% for materia in materias %}
-              <li class="list-group-item">
-                {{ materia }}
-              </li>
-            {% endfor %}
-            </ul>
-        </div>
-    </div>
-</div>
 
-<div id="mydiv">
-    <img src="{% static 'img/ajax-loader.gif' %}" class="ajax-loader"/>
-</div>
+{% include 'dashboard_data.html' %}
 
 {% endblock 'content_container' %}
 
