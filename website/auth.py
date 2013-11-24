@@ -8,6 +8,16 @@ from django import forms
 from django.contrib.auth import authenticate
 from datetime import datetime, timedelta
 
+#class SysacadSession(GenericSysacadSession):
+#	def login(self, legajo, password):
+#		super(SysacadSession, self).login(legajo, password)
+#
+#	def _get(self, *args, **kwargs):
+#		response = super(SysacadSession, self)._get(*args, **kwargs)
+#		self.alumno.cookies.last_access = timezone.now()
+#		self.alumno.cookies.save()
+#		return response
+
 class SysacadAuthBackend(object):
 	def authenticate(self, fr=None, legajo=None, password=None):
 		s = SysacadSession(FR[fr]['base_url'])

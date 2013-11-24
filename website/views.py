@@ -1,11 +1,13 @@
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
-from sysacad_api import SysacadSession
+from website.auth import SysacadSession
 from django.contrib.auth.decorators import login_required
 from sysacad_wrapper.settings import FR
 from django.utils import timezone
 from datetime import timedelta, datetime
+import json
+from django.template.loader import render_to_string
 
 @login_required
 def dashboard(request):
@@ -25,9 +27,13 @@ def dashboard_data(request):
 			s = SysacadSession(FR[request.user.fr]['base_url'])
 			s.login(request.user.legajo, request.POST.get('password'))
 		else:
-			return HttpResponse('password_required')
+			return HttpResponse(json.dumps({'state': 'password_required'}), content_type="application/json")
 
 	materias_dict = s.allDataFromEstadoAcademico()['materias']
 	materias = request.user.actualizar_materias(materias_dict).filter(estado='cursa')
 
-	return render_to_response('dashboard_data.html', RequestContext(request, {'materias': materias}))
+	data = {
+		'state': 'OK',
+		'html': render_to_string('dashboard_data.html', {'materias': materias})
+	}
+	return HttpResponse(json.dumps(data), content_type="application/json")
