@@ -12,6 +12,10 @@ class SysacadSession(GenericSysacadSession):
 	def __init__(self, alumno=None, *args, **kwargs):
 		super(SysacadSession, self).__init__(*args, **kwargs)
 		self.alumno = alumno
+		if alumno:
+			cookies = {alumno.cookies.key: alumno.cookies.value}
+			self.cookies = cookies
+
 
 	def _get(self, *args, **kwargs):
 		response = super(SysacadSession, self)._get(*args, **kwargs)
@@ -30,9 +34,7 @@ class SysacadSession(GenericSysacadSession):
 class SysacadAuthBackend(object):
 	def authenticate(self, fr=None, legajo=None, password=None):
 		s = SysacadSession(base_url=FR[fr]['base_url'])
-		print s, "asd"
 		try:
-			print legajo, password
 			s.login(legajo, password)
 		except:
 			return None

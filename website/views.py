@@ -18,8 +18,7 @@ def dashboard(request):
 def dashboard_data(request):
 	valid_cookie = (timezone.now() - request.user.cookies.last_access) < timedelta(seconds=200)
 	if valid_cookie:
-		cookies = {request.user.cookies.key: request.user.cookies.value}
-		s = SysacadSession(base_url=FR[request.user.fr]['base_url'], cookies=cookies, alumno=request.user)
+		s = SysacadSession(base_url=FR[request.user.fr]['base_url'], alumno=request.user)
 	else:
 		if request.POST.get('password'):
 			s = SysacadSession(FR[request.user.fr]['base_url'])
