@@ -11,6 +11,19 @@
             {% for materia in materias %}
               <li class="list-group-item">
                 {{ materia.materia.nombre }}
+                {% if materia.materia.dificultad %}
+                    {% if materia.materia.dificultad == 'h' %}
+                    <div class="label label-danger pull-right">Hard</div>
+                    {% endif %}
+                    {% if materia.materia.dificultad == 'm' %}
+                    <div class="label label-warning pull-right">Medium</div>
+                    {% endif %}
+                    {% if materia.materia.dificultad == 'e' %}
+                    <div class="label label-success pull-right">Easy</div>
+                    {% endif %}
+                {% else %}
+                    <div class="label label-default pull-right">Calificar</div>
+                {% endif %}
               </li>
             {% endfor %}
             </ul>

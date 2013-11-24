@@ -11,10 +11,10 @@ $(document).ready(function() {
 	        ,'sessionid':getCookie('sessionid')
 	        },
 	    success : function(data) {
-	        if (data == 'password_required') {
+	        if (data['state'] == 'password_required') {
 	        	console.log('Password required.');
 	        } else {
-	        	$('#content-container').html(data);
+	        	$('#content-container').html(data['html']);
 	        	$('.actualizando-alert').removeClass('active');
 	        };
 	    }
