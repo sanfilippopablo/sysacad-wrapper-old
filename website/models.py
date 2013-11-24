@@ -1,5 +1,5 @@
  # -*- coding: utf-8 -*-
-
+from __future__ import division
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractUser
 from django.utils import timezone
@@ -107,3 +107,6 @@ class Alumno(AbstractUser):
 				al_mat.estado = 'regular'
 			al_mat.save()
 		return self.materias
+
+	def get_materia_percent(self, estado):
+		return (self.materias.filter(estado=estado).count() / self.materias.count()) * 100
