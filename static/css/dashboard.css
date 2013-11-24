@@ -1,3 +1,13 @@
 .materias-en-curso .list-group-item {
   border : 0px solid white;
 }
+
+.actualizando-alert {
+	margin-left: 16px;
+	margin-right: 16px;
+	display: none;
+}
+
+.actualizando-alert.active {
+	display: block;
+}
