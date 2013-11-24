@@ -110,3 +110,9 @@ class Alumno(AbstractUser):
 
 	def get_materia_percent(self, estado):
 		return (self.materias.filter(estado=estado).count() / self.materias.count()) * 100
+
+	def get_carrera_progress(self):
+		a = self.get_materia_percent('aprobada')
+		r = self.get_materia_percent('regular')
+		c = self.get_materia_percent('cursa')
+		return str(int(a + (r / 4) + (c / 8)))

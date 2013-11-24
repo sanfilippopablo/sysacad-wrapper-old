@@ -1,4 +1,26 @@
 {% load staticfiles %}
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title">Progreso de la carrera: <strong>{{ carrera_progress }}%</strong></div>
+            </div>
+            <div class="panel-body">
+                <div class="progress">
+                  <div id="aprobadas-bar" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ aprobadas_percent }}%;" title="Materias aprobadas" data-trigger="hover">
+                    <span class="sr-only">{{ aprobadas_percent }}%</span>
+                  </div>
+                  <div class="progress-bar" role="progressbar" aria-valuenow="{{ regularizadas_percent }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ regularizadas_percent }}%;" title="Materias regularizadas" >
+                    <span class="sr-only">{{ regularizadas_percent }}%</span>
+                  </div>
+                  <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{ cursa_percent }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ cursa_percent }}%;" title="Materias en curso" >
+                    <span class="sr-only">{{ cursa_percent }}%</span>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="col-md-6 col-sm-6 col-lg-6">
     <div class="panel panel-default materias-en-curso">
         <div class="panel-heading">

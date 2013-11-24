@@ -12,7 +12,11 @@ from django.template.loader import render_to_string
 @login_required
 def dashboard(request):
 	materias = request.user.materias.filter(estado='cursa')
-	return render_to_response('dashboard.html', RequestContext(request, {'materias': materias}))
+	aprobadas_percent = request.user.get_materia_percent('aprobada')
+	regularizadas_percent = request.user.get_materia_percent('regular')
+	cursa_percent = request.user.get_materia_percent('cursa')
+	carrera_progress = request.user.get_carrera_progress()
+	return render_to_response('dashboard.html', RequestContext(request, locals()))
 
 @login_required
 def dashboard_data(request):
@@ -28,9 +32,20 @@ def dashboard_data(request):
 
 	materias_dict = s.allDataFromEstadoAcademico()['materias']
 	materias = request.user.actualizar_materias(materias_dict).filter(estado='cursa')
-
+	materias = request.user.materias.filter(estado='cursa')
+	aprobadas_percent = request.user.get_materia_percent('aprobada')
+	regularizadas_percent = request.user.get_materia_percent('regular')
+	cursa_percent = request.user.get_materia_percent('cursa')
+	carrera_progress = request.user.get_carrera_progress()
+	context = {
+		'materias': materias,
+		'aprobadas_percent': aprobadas_percent,
+		'regularizadas_percent': regularizadas_percent,
+		'cursa_percent': cursa_percent,
+		'carrera_progress': carrera_progress,
+	}
 	data = {
 		'state': 'OK',
-		'html': render_to_string('dashboard_data.html', {'materias': materias})
+		'html': render_to_string('dashboard_data.html', context)
 	}
 	return HttpResponse(json.dumps(data), content_type="application/json")
