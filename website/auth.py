@@ -2,26 +2,37 @@
 from website.models import Alumno
 from django.db import models
 from django.utils import timezone
-from sysacad_api import SysacadSession
+from sysacad_api import SysacadSession as GenericSysacadSession
 from sysacad_wrapper.settings import FR, SESSION_DURATION
 from django import forms
 from django.contrib.auth import authenticate
 from datetime import datetime, timedelta
 
-#class SysacadSession(GenericSysacadSession):
-#	def login(self, legajo, password):
-#		super(SysacadSession, self).login(legajo, password)
-#
-#	def _get(self, *args, **kwargs):
-#		response = super(SysacadSession, self)._get(*args, **kwargs)
-#		self.alumno.cookies.last_access = timezone.now()
-#		self.alumno.cookies.save()
-#		return response
+class SysacadSession(GenericSysacadSession):
+	def __init__(self, alumno=None, *args, **kwargs):
+		super(SysacadSession, self).__init__(*args, **kwargs)
+		self.alumno = alumno
+
+	def _get(self, *args, **kwargs):
+		response = super(SysacadSession, self)._get(*args, **kwargs)
+		if self.alumno:
+			self.alumno.cookies.last_access = timezone.now()
+			self.alumno.cookies.save()
+		return response
+
+	def _post(self, *args, **kwargs):
+		response = super(SysacadSession, self)._post(*args, **kwargs)
+		if self.alumno:
+			self.alumno.cookies.last_access = timezone.now()
+			self.alumno.cookies.save()
+		return response
 
 class SysacadAuthBackend(object):
 	def authenticate(self, fr=None, legajo=None, password=None):
-		s = SysacadSession(FR[fr]['base_url'])
+		s = SysacadSession(base_url=FR[fr]['base_url'])
+		print s, "asd"
 		try:
+			print legajo, password
 			s.login(legajo, password)
 		except:
 			return None
