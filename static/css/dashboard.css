@@ -11,3 +11,7 @@
 .actualizando-alert.active {
 	display: block;
 }
+
+.actualizando-alert img {
+	margin-right: 15px;
+}
