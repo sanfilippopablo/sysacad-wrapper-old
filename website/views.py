@@ -8,6 +8,8 @@ from django.utils import timezone
 from datetime import timedelta, datetime
 import json
 from django.template.loader import render_to_string
+from django.views.generic.edit import FormView
+from website import forms as website_forms
 
 @login_required
 def dashboard(request):
@@ -51,3 +53,20 @@ def dashboard_data(request):
 		'html': render_to_string('dashboard_data.html', context)
 	}
 	return HttpResponse(json.dumps(data), content_type="application/json")
+
+class ChangePasswordView(FormView):
+	template_name = 'change_password.html'
+	form_class = website_forms.ChangePasswordForm
+	success_url = '/'
+
+	def get_form_kwargs(self):
+		kwargs = super(ChangePasswordView, self).get_form_kwargs()
+		kwargs['user'] = self.request.user
+		print kwargs
+		return kwargs
+
+	def form_valid(self, form):
+		# This method is called when valid form data has been POSTed.
+		# It should return an HttpResponse.
+		form.save()
+		return super(ChangePasswordView, self).form_valid(form)
