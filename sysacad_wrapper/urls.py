@@ -9,9 +9,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^$', 'website.views.dashboard'),
+    url(r'^$', 'website.views.dashboard', name='dashboard'),
     url(r'^ajax/dashboard_data/$', 'website.views.dashboard_data'),
-    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html', 'authentication_form': AuthenticationForm}),
-    url(r'^ajustes-personales/$', login_required(website.views.AjustesPersonalesView.as_view())),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html', 'authentication_form': AuthenticationForm}, name='login'),
+    url(r'^ajustes-personales/$', login_required(website.views.AjustesPersonalesView.as_view()), name='ajustes-personales'),
+    url(r'^admin/', include(admin.site.urls), name='admin'),
 )

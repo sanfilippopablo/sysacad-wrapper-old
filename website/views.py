@@ -11,6 +11,7 @@ import json
 from django.template.loader import render_to_string
 from django.views.generic.edit import FormView
 from website import forms as website_forms
+from django.core.urlresolvers import reverse_lazy
 
 @login_required
 def dashboard(request):
@@ -58,11 +59,10 @@ def dashboard_data(request):
 class AjustesPersonalesView(FormView):
 	template_name = 'ajustes-personales.html'
 	form_class = website_forms.AjustesPersonalesForm
-	success_url = '/ajustes-personales/'
+	success_url = reverse_lazy('ajustes-personales')
 
 	def get_initial(self):
 		initial = {'email': self.request.user.email}
-		print initial
 		return initial
 
 	def get_form_kwargs(self):
