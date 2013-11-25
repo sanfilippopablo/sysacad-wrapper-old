@@ -12,6 +12,8 @@ from django.template.loader import render_to_string
 @login_required
 def dashboard(request):
 	materias = request.user.materias.filter(estado='cursa')
+	if materias.count() == 0:
+		return render_to_response('dashboard.html', RequestContext(request, {'estado': 'new_user'}))
 	aprobadas_percent = request.user.get_materia_percent('aprobada')
 	regularizadas_percent = request.user.get_materia_percent('regular')
 	cursa_percent = request.user.get_materia_percent('cursa')

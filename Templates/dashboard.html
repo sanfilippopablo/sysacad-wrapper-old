@@ -6,12 +6,20 @@
 
 {% block 'content_container' %}
 
+{% if estado == 'new_user' %}
+<div class="alert alert-info actualizando-alert active">
+    <img src="{% static 'img/ajax-loader.gif' %}">
+    Obteniendo tu información, aguantá un toque...
+</div>
+
+{% else %}
 <div class="alert alert-info actualizando-alert active">
     <img src="{% static 'img/ajax-loader.gif' %}">
     Datos antiguos, actualizando los nuevos datos...
 </div>
-
 {% include 'dashboard_data.html' %}
+
+{% endif %}
 
 {% endblock 'content_container' %}
 
