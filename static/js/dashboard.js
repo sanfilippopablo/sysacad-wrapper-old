@@ -12,7 +12,11 @@ $(document).ready(function() {
 	        },
 	    success : function(data) {
 	        if (data['state'] == 'password_required') {
-	        	console.log('Password required.');
+	        	$('#content-container').append(data['html']);
+	        	$('.password-required-modal').modal()
+	        	$('.password-required-modal .submit-button').click(function(){
+	        		console.log('Password Required.')
+	        	})
 	        } else {
 	        	$('#content-container').html(data['html']);
 	        	$('.actualizando-alert').removeClass('active');
