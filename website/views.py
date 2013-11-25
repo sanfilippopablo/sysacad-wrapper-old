@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
@@ -54,19 +55,23 @@ def dashboard_data(request):
 	}
 	return HttpResponse(json.dumps(data), content_type="application/json")
 
-class ChangePasswordView(FormView):
-	template_name = 'change_password.html'
-	form_class = website_forms.ChangePasswordForm
-	success_url = '/'
+class AjustesPersonalesView(FormView):
+	template_name = 'ajustes-personales.html'
+	form_class = website_forms.AjustesPersonalesForm
+	success_url = '/ajustes-personales/'
+
+	def get_initial(self):
+		initial = {'email': self.request.user.email}
+		print initial
+		return initial
 
 	def get_form_kwargs(self):
-		kwargs = super(ChangePasswordView, self).get_form_kwargs()
+		kwargs = super(AjustesPersonalesView, self).get_form_kwargs()
 		kwargs['user'] = self.request.user
-		print kwargs
 		return kwargs
 
 	def form_valid(self, form):
 		# This method is called when valid form data has been POSTed.
 		# It should return an HttpResponse.
 		form.save()
-		return super(ChangePasswordView, self).form_valid(form)
+		return super(AjustesPersonalesView, self).form_valid(form)

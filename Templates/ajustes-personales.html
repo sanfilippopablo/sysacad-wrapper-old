@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block 'head_title' %}Ajustes personales{% endblock %}
+{% block 'content_container_title' %}Ajustes Personales{% endblock %}
+
+{% block 'content_container' %}
+<div class="row">
+	<div class="col-lg-12">
+		{% crispy form %}
+	</div>
+</div>
+{% endblock 'content_container' %}
