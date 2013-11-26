@@ -12,6 +12,8 @@ from django.template.loader import render_to_string
 from django.views.generic.edit import FormView
 from website import forms as website_forms
 from django.core.urlresolvers import reverse_lazy
+from jsonview.decorators import json_view
+from crispy_forms.utils import render_crispy_form
 
 @login_required
 def dashboard(request):
@@ -75,3 +77,12 @@ class AjustesPersonalesView(FormView):
 		# It should return an HttpResponse.
 		form.save()
 		return super(AjustesPersonalesView, self).form_valid(form)
+
+@json_view
+def renew_sysacad_session(request):
+	form = website_forms.RenewSysacadSessionForm(user=request.user, data=request.POST)
+	if form.is_valid():
+		return {'valid': True}
+	else:
+		form_html = render_crispy_form(form)
+    	return {'valid': False, 'form_html': form_html}

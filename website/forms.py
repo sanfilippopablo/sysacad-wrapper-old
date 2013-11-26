@@ -6,21 +6,34 @@ from django.contrib.auth import authenticate
 from sysacad_wrapper.settings import FR
 from website.auth import SysacadSession
 
-class PasswordOnlyForm(forms.Form):
+class RenewSysacadSessionForm(forms.Form):
 	password = forms.CharField(
 		required = True,
 		label = u'Contraseña',
 		widget = forms.PasswordInput,
 	)
-	def __init__(self, *args, **kwargs):
-		super(PasswordOnlyForm, self).__init__(*args, **kwargs)
+
+	def __init__(self, user=None, *args, **kwargs):
+		print locals()
+		super(RenewSysacadSessionForm, self).__init__(*args, **kwargs)
+		self.user = user
 		self.helper = FormHelper()
+		self.helper.form_class = 'renew-sysacad-session-form'
+		self.helper.form_method = 'post'
+		self.helper.layout = layout.Layout(
+			layout.Div(
+				'password',
+				css_class = 'form',
+			)
+		)
 
 	def clean_password(self):
-		password = self.cleaned_data['password']
-		if authenticate(FR[self.user.fr]['base_url'], self.user.legajo, password) is None:
+		password = self.cleaned_data.get('password')
+		print password
+		if authenticate(fr=self.user.fr, legajo=self.user.legajo, password=password) is None:
 			raise forms.ValidationError('La contraseña es incorrecta.')
 		return password
+
 
 class AjustesPersonalesForm(forms.Form):
 	email = forms.EmailField(

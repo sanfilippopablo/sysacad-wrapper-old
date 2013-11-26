@@ -1,26 +1,20 @@
-function getCookie(name) {
-  var parts = document.cookie.split(name + "=");
-  if (parts.length == 2) return parts.pop().split(";").shift();
-}
-
-$(document).ready(function() {
+var loadNewDashboardData = function () {
+	console.log("Loading new dashboard data.")
 	$.ajax({
 	    url : '/ajax/dashboard_data/',
 	    type: 'POST',
-	    headers: {'X-CSRFToken':getCookie('csrftoken')
-	        ,'sessionid':getCookie('sessionid')
-	        },
+	    headers: SysacadWrapper.djangoHeaders(),
 	    success : function(data) {
 	        if (data['state'] == 'password_required') {
-	        	$('#content-container').append(data['html']);
-	        	$('.password-required-modal').modal()
-	        	$('.password-required-modal .submit-button').click(function(){
-	        		console.log('Password Required.')
-	        	})
+	        	SysacadWrapper.requestPassword();
+	        	SysacadWrapper.callWhenSessionReady(loadNewDashboardData);
 	        } else {
 	        	$('#content-container').html(data['html']);
 	        	$('.actualizando-alert').removeClass('active');
 	        };
 	    }
 	});
-});
+}
+$(document).ready(function(){
+	loadNewDashboardData();
+})
