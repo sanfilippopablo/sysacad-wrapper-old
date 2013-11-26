@@ -22,13 +22,13 @@ SysacadWrapper = {
 	},
 
 	requestPassword: function() {
-		console.log("Password required. Launching modal.")
 		sObject = this;
-		var $passwordRequiredModal = $('.password-required-modal');
-		$passwordRequiredModal.modal('show');
-		$passwordRequiredModal.on('click', '.submit-button', function (e) {
-			$('.password-required-modal .modal-body *').hide();
-			$('.password-required-modal .modal-body').append('<img src="static/img/big-ajax-loader.gif" alt="Cargando" class="loading-img"/>');
+		$('.password-required-modal').modal('show');
+		$(document).on('submit', '.renew-sysacad-session-form', function (e) {
+			e.preventDefault();
+			$('.password-required-modal').modal('hide');
+			$('body').removeClass('modal-open');
+			$('.modal-backdrop').remove();
 			$.ajax({
 				url: '/ajax/renew-sysacad-session/',
 				type: 'POST',
@@ -36,14 +36,11 @@ SysacadWrapper = {
 				data: $('.renew-sysacad-session-form').serialize(),
 				success: function (data) {
 					if (data['valid']) {
-						// Ocultar modal.
-						$passwordRequiredModal.modal('hide');
 						sObject.callPendingCallbacks();
 					} else {
-						// Render form inside modal.
-						$('.password-required-modal .form').replaceWith(data['form_html']);
-						$('.password-required-modal .loading-img').remove();
-						$('.password-required-modal .modal-body *').show();
+						// Render form.
+						$('.renew-sysacad-session-form').replaceWith(data['form_html']);
+						$('.password-required-modal').modal('show')
 
 					}
 				}

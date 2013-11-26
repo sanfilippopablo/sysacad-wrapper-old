@@ -21,9 +21,33 @@ class RenewSysacadSessionForm(forms.Form):
 		self.helper.form_class = 'renew-sysacad-session-form'
 		self.helper.form_method = 'post'
 		self.helper.layout = layout.Layout(
-			layout.Div(
-				'password',
-				css_class = 'form',
+			layout.HTML(
+				u"""
+				<div class="modal fade password-required-modal" data-show="false">
+				  <div class="modal-dialog">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				        <h4 class="modal-title">Contraseña requerida</h4>
+				      </div>
+				      <div class="modal-body">
+				        <p>La sesión de Sysacad expiró. Necesitamos tu contraseña para poder recuperar los datos.</p>
+				        <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 form-group">
+				"""
+			),
+			'password',
+			layout.HTML(
+				"""
+				        </div>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Salir</button>
+				        <button type="submit" class="btn btn-primary submit-button">Enviar</button>
+				      </div>
+				    </div><!-- /.modal-content -->
+				  </div><!-- /.modal-dialog -->
+				</div><!-- /.modal -->
+				"""
 			)
 		)
 

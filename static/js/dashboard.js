@@ -1,5 +1,4 @@
 var loadNewDashboardData = function () {
-	console.log("Loading new dashboard data.")
 	$.ajax({
 	    url : '/ajax/dashboard_data/',
 	    type: 'POST',
