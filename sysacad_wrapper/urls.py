@@ -15,4 +15,5 @@ urlpatterns = patterns('',
     url(r'^ajustes-personales/$', login_required(website.views.AjustesPersonalesView.as_view()), name='ajustes-personales'),
     url(r'^ajax/renew-sysacad-session/$', website.views.renew_sysacad_session, name='ajax-renew-sysacad-session'),
     url(r'^admin/', include(admin.site.urls), name='admin'),
+    url(r'^materias/$', website.views.materias, name='materias'),
 )

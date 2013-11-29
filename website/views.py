@@ -14,6 +14,7 @@ from website import forms as website_forms
 from django.core.urlresolvers import reverse_lazy
 from jsonview.decorators import json_view
 from crispy_forms.utils import render_crispy_form
+from django.views.generic.list import ListView
 
 @login_required
 def dashboard(request):
@@ -82,3 +83,8 @@ def renew_sysacad_session(request):
 	else:
 		form_html = render_crispy_form(form)
     	return {'valid': False, 'form_html': form_html}
+
+@login_required
+def materias(request):
+	materias = request.user.materias.all()
+	return render_to_response('materias.html', RequestContext(request, locals()))

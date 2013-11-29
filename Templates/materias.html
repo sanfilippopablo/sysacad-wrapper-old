@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block 'head_title' %}Materias{% endblock %}
+{% block 'content_container_title' %}Materias{% endblock %}
+
+{% block 'content_container' %}
+
+<div style="text-align:right">
+	<span style="font-size: 1.2em;font-weight: bold">
+		Filtrar:
+	</span>
+
+	<div class="btn-group" data-toggle="buttons">
+	  <label class="btn btn-default">
+	    <input type="checkbox" name="options" id="option1"> Aprobadas
+	  </label>
+	  <label class="btn btn-default">
+	    <input type="checkbox" name="options" id="option2"> Regularizadas
+	  </label>
+	  <label class="btn btn-default">
+	    <input type="checkbox" name="options" id="option3"> En curso
+	  </label>
+	</div>
+</div>
+
+{% for materia in materias %}
+	<p><strong> {{materia.materia.nombre}} </strong></p>
+{% endfor %}
+
+{% endblock 'content_container' %}
