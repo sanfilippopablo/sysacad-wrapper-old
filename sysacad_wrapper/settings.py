@@ -20,11 +20,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '0q^o8p%fyie!&+r7+0@^o86q(ff)4s7%$+7m5oi4kv-i(=-v+%'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-TEMPLATE_DEBUG = True
-
 ALLOWED_HOSTS = []
 
 
@@ -127,6 +122,11 @@ TEMPLATE_CONTEXT_PROCESSORS = ("django.contrib.auth.context_processors.auth",
     "website.context_processors.renew_sysacad_session_form"
 )
 
+try:
+    from local_settings import *
+except ImportError:
+    pass
+
 # debug_toolbar settings
 if DEBUG:
     INTERNAL_IPS = ('127.0.0.1',)
@@ -155,8 +155,3 @@ if DEBUG:
     DEBUG_TOOLBAR_CONFIG = {
         'INTERCEPT_REDIRECTS': False,
     }
-
-try:
-    from local_settings import *
-except ImportError:
-    pass
