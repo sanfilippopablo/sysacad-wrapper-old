@@ -3,7 +3,7 @@ from website.models import Alumno
 from django.db import models
 from django.utils import timezone
 from sysacad_api import SysacadSession as GenericSysacadSession
-from sysacad_wrapper.settings import FR, SESSION_DURATION
+from sysacad_wrapper.settings import FR, SESSION_DURATION, ALLOWED_LEGAJOS
 from django import forms
 from django.contrib.auth import authenticate
 from datetime import datetime, timedelta
@@ -71,7 +71,8 @@ class AuthenticationForm(forms.Form):
 	password = forms.CharField(label="Contraseña", widget=forms.PasswordInput)
 
 	error_messages = {
-		'invalid_login': "Información de login incorrecta."
+		'invalid_login': "Información de login incorrecta.",
+		'legajo_not_allowed': "No estás autorizado para entrar. Para conseguir una invitación, contactate con facebook.com/giamfreeg."
 	}
 
 	def __init__(self, request, *args, **kwargs):
@@ -83,14 +84,17 @@ class AuthenticationForm(forms.Form):
 		legajo = self.cleaned_data.get('legajo')
 		password = self.cleaned_data.get('password')
 
-		if fr and legajo and password:
-			self.user_cache = authenticate(fr=fr,
-										   legajo=legajo,
-										   password=password)
-			if self.user_cache is None:
-				raise forms.ValidationError(self.error_messages['invalid_login'])
+		if not legajo in ALLOWED_LEGAJOS:
+			raise forms.ValidationError(self.error_messages['legajo_not_allowed'])
+		else:
+			if fr and legajo and password:
+				self.user_cache = authenticate(fr=fr,
+											   legajo=legajo,
+											   password=password)
+				if self.user_cache is None:
+					raise forms.ValidationError(self.error_messages['invalid_login'])
 
-		return self.cleaned_data
+			return self.cleaned_data
 
 	def get_user_id(self):
 		if self.user_cache:

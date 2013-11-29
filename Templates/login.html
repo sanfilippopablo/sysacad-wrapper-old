@@ -6,9 +6,9 @@
 <div class="row">
     <div class="col-md-4 col-sm-6 col-sm-offset-3 col-md-offset-4 well">
         <legend>Iniciar sesión</legend>
-        {% if form.errors %}
+        {% if form.non_field_errors %}
         <div class="alert alert-danger">
-            <a class="close" data-dismiss="alert" href="#">×</a>Legajo o contraseña incorrectos.
+            <a class="close" data-dismiss="alert" href="#">×</a>{{form.non_field_errors.0}}
         </div>
         {% endif %}
         <form method="POST" action="." accept-charset="UTF-8">
