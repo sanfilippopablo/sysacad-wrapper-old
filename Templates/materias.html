@@ -6,8 +6,8 @@
 
 {% block 'content_container' %}
 
-<div style="text-align:right">
-	<span style="font-size: 1.2em;font-weight: bold">
+<div class="filter-box">
+	<span class="filter-text">
 		Filtrar:
 	</span>
 
@@ -24,8 +24,26 @@
 	</div>
 </div>
 
-{% for materia in materias %}
-	<p><strong> {{materia.materia.nombre}} </strong></p>
-{% endfor %}
+<div class="panel-group" id="materias-list">
+	{% for materia in materias %}
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a href="#materia-{{ forloop.counter }}" data-toggle="collapse" data-parent="#materias-list">{{ materia.materia.nombre }}</a>
+			</h4>
+		</div>
+		<div class="panel-collapse collapse" id="materia-{{ forloop.counter }}">
+			<div class="panel-body">
+				Details implementation.
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>
 
 {% endblock 'content_container' %}
+
+{% block 'css' %}
+	{{ block.super }}
+	<link rel="stylesheet" href="{% static 'css/materias.css' %}">
+{% endblock 'css' %}
