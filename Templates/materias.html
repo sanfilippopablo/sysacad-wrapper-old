@@ -45,9 +45,29 @@
 		</div>
 		<div class="panel-collapse collapse" id="materia-{{ forloop.counter }}">
 			<div class="panel-body">
-				{% if materia.estado == 'aprobada' %}
-					Nota: {{ materia.nota }}
+				{% if materia.estado == 'regular' %}
+					<button class="btn btn-success">Inscribirse a exámen</button>
+				{% elif materia.estado == 'aprobada' %}
+				<div class="row">
+					<div class="col-lg-1" style="text-align:center">
+						<div class="materia-nota-label">Nota</div>
+						<div class="materia-nota">
+							{{ materia.nota }}
+						</div>
+					</div>
+					<div class="col-lg-2">
+						<p><span style="font-weight:300">Tomo</span> {{ materia.tomo }}.</p>
+						<p><span style="font-weight:300">Folio</span> {{materia.folio }}.</p>
+					</div>
+				</div>
+				{% elif materia.estado == 'cursa' %}
+				<div>
+				Aula: {{ materia.aula }} Comisión {{ materia.comision }}
+				</div>
+				{% elif materia.estado == 'no_inscripto' %}
+					<button class="btn btn-primary">Inscribirse a cursado</button>
 				{% endif %}
+				Datos para materias en cualquier estado
 			</div>
 		</div>
 	</div>
