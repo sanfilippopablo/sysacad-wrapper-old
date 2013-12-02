@@ -29,12 +29,25 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<h4 class="panel-title">
-				<a href="#materia-{{ forloop.counter }}" data-toggle="collapse" data-parent="#materias-list">{{ materia.materia.nombre }}</a>
+				<a href="#materia-{{ forloop.counter }}" data-toggle="collapse" data-parent="#materias-list" class="materia-name">
+					{{ materia.materia.nombre }}
+					{% if materia.estado == 'aprobada' %}
+					<span class="text-success pull-right">Aprobada</span>
+					{% elif materia.estado == 'regular' %}
+					<span class="text-primary pull-right">Regularizada</span>
+					{% elif materia.estado == 'cursa' %}
+					<span class="text-info pull-right">En curso</span>
+					{% else %}
+					<span class="text-muted pull-right">No inscripto</span>
+					{% endif %}
+				</a>
 			</h4>
 		</div>
 		<div class="panel-collapse collapse" id="materia-{{ forloop.counter }}">
 			<div class="panel-body">
-				Details implementation.
+				{% if materia.estado == 'aprobada' %}
+					Nota: {{ materia.nota }}
+				{% endif %}
 			</div>
 		</div>
 	</div>

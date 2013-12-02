@@ -86,5 +86,5 @@ def renew_sysacad_session(request):
 
 @login_required
 def materias(request):
-	materias = request.user.materias.all()
+	materias = request.user.materias.all().select_related('materia').order_by('materia__anio', 'materia__nombre')
 	return render_to_response('materias.html', RequestContext(request, locals()))
