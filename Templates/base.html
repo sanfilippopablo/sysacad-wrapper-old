@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     {% block 'css' %}
-    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
     <link href="{% static 'css/base.css' %}" rel="stylesheet">
     {% endblock 'css' %}
@@ -95,10 +95,9 @@
     {% endblock 'password-required-modal' %}
 
     {% block 'js' %}
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
     <script src="{% static 'js/main.js' %}"></script>
-    <script src="{% static 'js/less-1.5.0.min.js' %}"></script>
     {% endblock 'js' %}
   </body>
 </html>
