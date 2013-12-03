@@ -93,7 +93,7 @@ class Alumno(AbstractUser):
 			# Actualizar materias de alumno.
 			# Acá estoy seteando todo otra vez. Pero hay que verificar, no setear todo otra vez.
 			# Así si detectamos un cambio mandamos la Notification.
-			al_mat = self.materias.get_or_create(materia=materia_obj, estado=mat['estado']['estado'])[0]
+			al_mat = self.materias.get_or_create(materia=materia_obj)[0]
 			if mat['estado']['estado'] == 'aprobada':
 				al_mat.estado = 'aprobada'
 				al_mat.nota = mat['estado']['nota']
