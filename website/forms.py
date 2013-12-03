@@ -14,7 +14,6 @@ class RenewSysacadSessionForm(forms.Form):
 	)
 
 	def __init__(self, user=None, *args, **kwargs):
-		print locals()
 		super(RenewSysacadSessionForm, self).__init__(*args, **kwargs)
 		self.user = user
 		self.helper = FormHelper()
@@ -30,12 +29,12 @@ class RenewSysacadSessionForm(forms.Form):
 				        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				        <h4 class="modal-title">Contraseña requerida</h4>
 				      </div>
-				      <div class="modal-body">
+				      <div class="modal-body clearfix">
 				        <p>La sesión de Sysacad expiró. Necesitamos tu contraseña para poder recuperar los datos.</p>
 				        <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 form-group">
 				"""
 			),
-			'password',
+			layout.Field('password', placeholder="Contraseña"),
 			layout.HTML(
 				"""
 				        </div>
@@ -47,6 +46,11 @@ class RenewSysacadSessionForm(forms.Form):
 				    </div><!-- /.modal-content -->
 				  </div><!-- /.modal-dialog -->
 				</div><!-- /.modal -->
+				<style>
+				.asteriskField {
+				    display: none;
+				}
+				</style>
 				"""
 			)
 		)
