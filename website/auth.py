@@ -43,9 +43,7 @@ class SysacadAuthBackend(object):
 		except Alumno.DoesNotExist:
 			alumno = Alumno.objects.create_user(fr, legajo)
 			alumno.set_password(password)
-			datos = s.datosAlumno()
-			alumno.first_name = datos['nombre']
-			alumno.last_name = datos['apellido']
+			alumno.first_name, alumno.last_name = s.estado_academico_data['datos_alumno']
 			alumno.save()
 		else:
 			if not alumno.check_password(password):

@@ -25,7 +25,7 @@ def dashboard_data(request):
 	else:
 		return {'state': 'password_required'}
 
-	materias_dict = s.allDataFromEstadoAcademico()['materias']
+	materias_dict = s.estado_academico_data()['materias']
 	materias = request.user.actualizar_materias(materias_dict).filter(estado='cursa')
 	materias = request.user.materias.filter(estado='cursa')
 	aprobadas_percent = request.user.get_materia_percent('aprobada')
