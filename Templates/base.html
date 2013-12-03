@@ -56,13 +56,10 @@
       	{% block 'off_canvas_menu' %}
 		<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
           <div class="list-group">
-            <a href="{% url 'dashboard' %}" class="list-group-item active">Dashboard</a>
-            <a href="{% url 'materias' %}" class="list-group-item">Materias</a>
-            <a href="#" class="list-group-item">Estadísticas</a>
-            <a href="#" class="list-group-item">Encontrar compañeros</a>
-            <a href="#" class="list-group-item">Horarios de cursado</a>
-            <a href="#" class="list-group-item">Scoreboard</a>
-            <a href="#" class="list-group-item">Logros</a>
+            {% url 'dashboard' as url %}
+            <a class="list-group-item {% if request.path == url %} active {% endif %}" href="{{ url }}">Dashboard</a>
+            {% url 'materias' as url %}
+            <a class="list-group-item {% if request.path == url %} active {% endif %}" href="{{ url }}">Materias</a>
           </div>
         </div><!--/span-->
         {% endblock 'off_canvas_menu' %}
