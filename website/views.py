@@ -27,34 +27,6 @@ def dashboard(request):
 	carrera_progress = request.user.get_carrera_progress()
 	return render_to_response('dashboard.html', RequestContext(request, locals()))
 
-@json_view
-@login_required
-def dashboard_data(request):
-	valid_cookie = (timezone.now() - request.user.cookies.last_access) < timedelta(seconds=200)
-	if valid_cookie:
-		s = SysacadSession(base_url=FR[request.user.fr]['base_url'], alumno=request.user)
-	else:
-		return {'state': 'password_required'}
-
-	materias_dict = s.allDataFromEstadoAcademico()['materias']
-	materias = request.user.actualizar_materias(materias_dict).filter(estado='cursa')
-	materias = request.user.materias.filter(estado='cursa')
-	aprobadas_percent = request.user.get_materia_percent('aprobada')
-	regularizadas_percent = request.user.get_materia_percent('regular')
-	cursa_percent = request.user.get_materia_percent('cursa')
-	carrera_progress = request.user.get_carrera_progress()
-	context = {
-		'materias': materias,
-		'aprobadas_percent': aprobadas_percent,
-		'regularizadas_percent': regularizadas_percent,
-		'cursa_percent': cursa_percent,
-		'carrera_progress': carrera_progress,
-	}
-	return {
-		'state': 'OK',
-		'html': render_to_string('dashboard_data.html', context)
-	}
-
 class AjustesPersonalesView(FormView):
 	template_name = 'ajustes-personales.html'
 	form_class = website_forms.AjustesPersonalesForm
@@ -74,15 +46,6 @@ class AjustesPersonalesView(FormView):
 		# It should return an HttpResponse.
 		form.save()
 		return super(AjustesPersonalesView, self).form_valid(form)
-
-@json_view
-def renew_sysacad_session(request):
-	form = website_forms.RenewSysacadSessionForm(user=request.user, data=request.POST)
-	if form.is_valid():
-		return {'valid': True}
-	else:
-		form_html = render_crispy_form(form)
-    	return {'valid': False, 'form_html': form_html}
 
 @login_required
 def materias(request):
