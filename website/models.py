@@ -57,7 +57,7 @@ class AlumnoManager(BaseUserManager):
 
 
 class Session(models.Model):
-	session = models.CharField(max_length=2000, null=True)
+	session = models.TextField(null=True)
 	last_access = models.DateTimeField(default=timezone.now())
 
 	def set_session(self, session):
