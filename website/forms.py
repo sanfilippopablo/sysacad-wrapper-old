@@ -139,8 +139,9 @@ class AjustesPersonalesForm(forms.Form):
 		return self.cleaned_data
 
 	def save(self, commit=True):
-		s = SysacadSession(base_url=FR[self.user.fr]['base_url'], alumno=self.user)
-		s.change_password(self.cleaned_data['old_password'], self.cleaned_data['new_password1'])
+		sysacad = SysacadSession(alumno=self.user)
+		sysacad.change_password(self.cleaned_data['old_password'], self.cleaned_data['new_password1'])
+		sysacad.close()
 		self.user.set_password(self.cleaned_data['new_password1'])
 		if self.cleaned_data['email'] != "":
 			self.user.email = self.cleaned_data['email']

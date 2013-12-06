@@ -19,13 +19,14 @@ from django.views.generic.list import ListView
 @json_view
 @login_required
 def dashboard_data(request):
-	valid_cookie = (timezone.now() - request.user.cookies.last_access) < timedelta(seconds=200)
-	if valid_cookie:
-		s = SysacadSession(base_url=FR[request.user.fr]['base_url'], alumno=request.user)
+	valid_session = (timezone.now() - request.user.session.last_access) < timedelta(seconds=200)
+	if valid_session:
+		sysacad = SysacadSession(alumno=request.user)
 	else:
 		return {'state': 'password_required'}
 
-	materias_dict = s.estado_academico_data()['materias']
+	materias_dict = sysacad.estado_academico_data()['materias']
+	sysacad.close()
 	materias = request.user.actualizar_materias(materias_dict).filter(estado='cursa')
 	materias = request.user.materias.filter(estado='cursa')
 	aprobadas_percent = request.user.get_materia_percent('aprobada')

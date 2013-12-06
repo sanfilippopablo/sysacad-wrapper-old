@@ -10,26 +10,32 @@ from datetime import datetime, timedelta
 
 class SysacadSession(GenericSysacadSession):
 	def __init__(self, alumno=None, *args, **kwargs):
-		super(SysacadSession, self).__init__(*args, **kwargs)
 		self.alumno = alumno
 		if alumno:
-			cookies = {alumno.cookies.key: alumno.cookies.value}
-			self.cookies = cookies
-
+			session = alumno.session.get_session()
+			base_url = FR[alumno.fr]['base_url']
+			super(SysacadSession, self).__init__(base_url=base_url, session=session, *args, **kwargs)
+		else:
+			super(SysacadSession, self).__init__(*args, **kwargs)
 
 	def _get(self, *args, **kwargs):
 		response = super(SysacadSession, self)._get(*args, **kwargs)
 		if self.alumno:
-			self.alumno.cookies.last_access = timezone.now()
-			self.alumno.cookies.save()
+			self.alumno.session.last_access = timezone.now()
+			self.alumno.session.save()
 		return response
 
 	def _post(self, *args, **kwargs):
 		response = super(SysacadSession, self)._post(*args, **kwargs)
 		if self.alumno:
-			self.alumno.cookies.last_access = timezone.now()
-			self.alumno.cookies.save()
+			self.alumno.session.last_access = timezone.now()
+			self.alumno.session.save()
 		return response
+
+	def close(self):
+		if self.alumno:
+			self.alumno.session.set_session(self.session)
+			self.alumno.session.save()
 
 class SysacadAuthBackend(object):
 	def authenticate(self, fr=None, legajo=None, password=None):
@@ -43,16 +49,14 @@ class SysacadAuthBackend(object):
 		except Alumno.DoesNotExist:
 			alumno = Alumno.objects.create_user(fr, legajo)
 			alumno.set_password(password)
-			alumno.first_name, alumno.last_name = s.estado_academico_data['datos_alumno']
 			alumno.save()
 		else:
 			if not alumno.check_password(password):
 				alumno.set_password(password)
 		alumno.last_activity = timezone.now()
-		alumno.cookies.last_access = timezone.now()
-		alumno.cookies.key = s.cookies.keys()[0]
-		alumno.cookies.value = s.cookies.values()[0]
-		alumno.cookies.save()
+		alumno.session.last_access = timezone.now()
+		alumno.session.set_session(s.session)
+		alumno.session.save()
 		alumno.save()
 		return alumno
 

@@ -34,7 +34,15 @@
           {% if user.is_authenticated %}
           <li><a href="">Legajo {{ user.legajo }}</a></li>
             <li class="dropdown">
-		        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{ user.get_full_name }} <b class="caret"></b></a>
+		        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>
+              <span class="user-full-name">
+              {% if user.get_full_name %}
+                {{ user.get_full_name }}
+              {% else %}
+                <img src="{% static 'img/ajax-loader.gif' %}"> Cargando datos...
+              {% endif %}
+              </span>
+            <b class="caret"></b></a>
 		        <ul class="dropdown-menu">
 		          <li><a href="{% url 'ajustes-personales' %}">Ajustes Personales</a></li>
 		          <li class="divider"></li>

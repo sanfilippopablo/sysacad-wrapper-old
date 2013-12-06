@@ -3,6 +3,7 @@ from __future__ import division
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractUser
 from django.utils import timezone
+import pickle
 
 materia_dificultad = (
 	('e', 'Easy'),
@@ -38,9 +39,9 @@ class AlumnoManager(BaseUserManager):
                           is_staff=is_staff, is_active=True,
                           is_superuser=is_superuser, last_login=now,
                           date_joined=now, **extra_fields)
-        cookie = AccessCookie()
-        cookie.save()
-        user.cookies = cookie
+        session = Session()
+        session.save()
+        user.session = session
         user.username = user.fr + user.legajo
         user.set_password(password)
         user.save(using=self._db)
@@ -55,10 +56,15 @@ class AlumnoManager(BaseUserManager):
                                  **extra_fields)
 
 
-class AccessCookie(models.Model):
-	key = models.CharField(max_length=20, null=True)
-	value = models.CharField(max_length=24, null=True)
+class Session(models.Model):
+	session = models.CharField(max_length=2000, null=True)
 	last_access = models.DateTimeField(default=timezone.now())
+
+	def set_session(self, session):
+		self.session = pickle.dumps(session)
+
+	def get_session(self):
+		return pickle.loads(self.session)
 
 class Alumno(AbstractUser):
 
@@ -66,7 +72,7 @@ class Alumno(AbstractUser):
 	carrera = models.ForeignKey(Carrera, blank=True, null=True)
 	legajo = models.CharField(max_length=30)
 	last_activity = models.DateTimeField(default=timezone.now())
-	cookies = models.ForeignKey(AccessCookie, null=True)
+	session = models.ForeignKey(Session, null=True)
 	materias = models.ManyToManyField(EstadoMateria, blank=True, null=True)
 
 	objects = AlumnoManager()
