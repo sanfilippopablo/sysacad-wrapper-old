@@ -3,3 +3,5 @@
 *.pyc
 *.sqlite3
 local_settings.py
+
+/website/migrations/
