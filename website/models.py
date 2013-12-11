@@ -17,8 +17,14 @@ class Materia(models.Model):
     anio = models.CharField(max_length=2)
     dificultad = models.CharField(max_length=2, choices=materia_dificultad, null=True)
 
+    def __unicode__(self):
+    	return self.nombre
+
 class Carrera(models.Model):
 	nombre = models.CharField(max_length=128)
+
+	def __unicode__(self):
+		return self.nombre
 
 class EstadoMateria(models.Model):
 	materia = models.ForeignKey(Materia)
@@ -28,6 +34,13 @@ class EstadoMateria(models.Model):
 	tomo = models.IntegerField(blank=True, null=True)
 	folio = models.IntegerField(blank=True, null=True)
 	comision = models.CharField(max_length=24)
+
+	def __unicode__(self):
+		return u'%s: %s' % (self.materia.nombre, self.estado)
+
+	class Meta:
+		verbose_name = u'estado de materia'
+		verbose_name_plural = u'estados de materia'
 
 class AlumnoManager(BaseUserManager):
 
@@ -87,6 +100,11 @@ class Alumno(AbstractUser):
 	def actualizar_materias(self, materias_dict):
 		for mat in materias_dict:
 			# Actualizar la tabla materias (esto se hace la primera vez)
+
+			# Ignorar año materias de ingreso.
+			if int(mat['anio']) == 0:
+				continue
+
 			try:
 				materia_obj = Materia.objects.get(nombre=mat['nombre'])
 			except Materia.DoesNotExist:
